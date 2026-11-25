@@ -1,0 +1,726 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Prompt', 'Sarabun', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+body {
+  background-color: #f1f5f9;
+  color: #1e293b;
+  min-height: 100vh;
+}
+
+.page-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 28px 16px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background 0.35s ease;
+}
+
+/* พื้นหลังแยกตามธีมเทศกาล */
+.page-wrapper.theme-default {
+  background-color: #f1f5f9;
+}
+
+.page-wrapper.theme-christmas {
+  background: linear-gradient(160deg, #7f1d1d 0%, #14532d 55%, #052e16 100%);
+}
+
+.page-wrapper.theme-newyear {
+  background: linear-gradient(160deg, #0f172a 0%, #1e3a8a 60%, #312e81 100%);
+}
+
+.page-wrapper.theme-songkran {
+  background: linear-gradient(160deg, #0284c7 0%, #38bdf8 55%, #bae6fd 100%);
+}
+
+/* เอฟเฟกต์ลูกเล่นเทศกาล (ไม่บังการคลิก) */
+.festival-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.particle-item {
+  position: absolute;
+  top: -36px;
+  user-select: none;
+  opacity: 0.85;
+  animation-name: fallDown;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes fallDown {
+  0% {
+    transform: translateY(-20px) rotate(0deg);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateY(105vh) rotate(360deg);
+    opacity: 0.25;
+  }
+}
+
+/* การ์ดคำนวณหลัก */
+.calculator-card {
+  position: relative;
+  z-index: 2;
+  background: #ffffff;
+  width: 100%;
+  max-width: 450px;
+  border-radius: 18px;
+  padding: 24px 22px 28px;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.16);
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+}
+
+.theme-christmas .calculator-card {
+  border-color: #dc2626;
+}
+
+.theme-newyear .calculator-card {
+  border-color: #f59e0b;
+}
+
+.theme-songkran .calculator-card {
+  border-color: #0ea5e9;
+}
+
+/* แถบเลือกธีมเทศกาล */
+.theme-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+}
+
+.theme-bar-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.theme-pills {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.theme-pill {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+  border-radius: 8px;
+  padding: 6px 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.theme-pill:hover {
+  background: #f1f5f9;
+}
+
+.theme-pill.active {
+  background: #1e293b;
+  color: #ffffff;
+  border-color: #1e293b;
+}
+
+.theme-christmas .theme-pill.active {
+  background: #b91c1c;
+  border-color: #b91c1c;
+}
+
+.theme-newyear .theme-pill.active {
+  background: #d97706;
+  border-color: #d97706;
+}
+
+.theme-songkran .theme-pill.active {
+  background: #0284c7;
+  border-color: #0284c7;
+}
+
+/* แบนเนอร์เทศกาล */
+.festival-banner {
+  text-align: center;
+  padding: 7px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.theme-christmas .festival-banner {
+  background: linear-gradient(90deg, #fee2e2, #dcfce7);
+  color: #991b1b;
+  border: 1px dashed #dc2626;
+}
+
+.theme-newyear .festival-banner {
+  background: linear-gradient(90deg, #fef3c7, #e0e7ff);
+  color: #92400e;
+  border: 1px dashed #f59e0b;
+}
+
+.theme-songkran .festival-banner {
+  background: linear-gradient(90deg, #e0f2fe, #ccfbf1);
+  color: #075985;
+  border: 1px dashed #0284c7;
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.header-section h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* โลโก้แซ่บโอชา หมูกระทะ */
+.brand-logo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.flame-badge {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ea580c, #dc2626);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(234, 88, 12, 0.3);
+}
+
+.santa-hat {
+  position: absolute;
+  top: -12px;
+  right: -8px;
+  font-size: 20px;
+  transform: rotate(15deg);
+}
+
+.flame-badge.small {
+  width: 34px;
+  height: 34px;
+  margin: 0 auto 6px;
+}
+
+.brand-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #dc2626;
+  margin-top: 4px;
+  line-height: 1.1;
+}
+
+.brand-sub {
+  font-size: 11px;
+  font-weight: 700;
+  color: #475569;
+}
+
+/* ฟอร์มกรอกข้อมูล */
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #0f172a;
+  background-color: #ffffff;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #4f46e5;
+}
+
+.form-group input:disabled {
+  background-color: #e2e8f0;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* กรอบเครื่องดื่ม */
+.drink-fieldset {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+
+.drink-fieldset legend {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  padding: 0 6px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  color: #1e293b;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.radio-label input[type='radio'] {
+  accent-color: #2563eb;
+  width: 16px;
+  height: 16px;
+}
+
+.bottle-inputs {
+  margin-top: 8px;
+}
+
+.helper-text {
+  display: block;
+  font-size: 11.5px;
+  color: #64748b;
+  margin-top: 5px;
+}
+
+/* ปุ่มคำสั่ง */
+.button-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn:hover {
+  opacity: 0.92;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-calc {
+  background-color: #4338ca;
+}
+
+.theme-christmas .btn-calc {
+  background-color: #15803d;
+}
+
+.theme-songkran .btn-calc {
+  background-color: #0284c7;
+}
+
+.btn-reset {
+  background-color: #ef4444;
+}
+
+.btn-bill {
+  background-color: #059669;
+}
+
+.theme-christmas .btn-bill {
+  background-color: #b91c1c;
+}
+
+/* กล่องแสดงยอดรวม */
+.total-box {
+  margin-top: 16px;
+  background-color: #eef2ff;
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.theme-christmas .total-box {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+}
+
+.theme-newyear .total-box {
+  background-color: #fffbeb;
+  border: 1px solid #fde68a;
+}
+
+.theme-songkran .total-box {
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+}
+
+.total-price {
+  font-size: 20px;
+  font-weight: 800;
+  color: #4338ca;
+}
+
+.theme-christmas .total-price {
+  color: #15803d;
+}
+
+.theme-newyear .total-price {
+  color: #b45309;
+}
+
+.theme-songkran .total-price {
+  color: #0284c7;
+}
+
+/* ประวัติบิลย้อนหลัง */
+.history-section {
+  margin-top: 20px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 14px;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 10px;
+}
+
+.history-header span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-clear-history {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 12px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.history-item:hover {
+  background-color: #eef2ff;
+}
+
+.history-time {
+  font-size: 11.5px;
+  color: #64748b;
+}
+
+.history-amount {
+  font-weight: 700;
+  color: #059669;
+}
+
+/* Modal ใบเสร็จ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  z-index: 1000;
+}
+
+.modal-container {
+  background: #ffffff;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 390px;
+  padding: 20px;
+  position: relative;
+  max-height: 92vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.25);
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #f1f5f9;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #475569;
+}
+
+.receipt-paper {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 13.5px;
+}
+
+.theme-christmas .receipt-paper {
+  border: 2px solid #dc2626;
+}
+
+.theme-newyear .receipt-paper {
+  border: 2px solid #f59e0b;
+}
+
+.theme-songkran .receipt-paper {
+  border: 2px solid #0284c7;
+}
+
+.receipt-decor {
+  text-align: center;
+  font-size: 15px;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+
+.receipt-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.receipt-header h2 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #dc2626;
+}
+
+.receipt-header p {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.receipt-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 8px;
+  font-size: 12.5px;
+  color: #334155;
+}
+
+.dashed-line {
+  border: none;
+  border-top: 1px dashed #94a3b8;
+  margin: 10px 0;
+}
+
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  color: #1e293b;
+}
+
+.discount-text {
+  color: #dc2626;
+}
+
+.receipt-grand-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 800;
+  color: #4338ca;
+  margin: 6px 0;
+}
+
+.theme-christmas .receipt-grand-total {
+  color: #15803d;
+}
+
+/* หารค่าอาหาร */
+.split-bill-box {
+  background-color: #f8fafc;
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-top: 10px;
+}
+
+.split-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  color: #475569;
+}
+
+.split-controls span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.split-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.split-stepper button {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.split-result {
+  text-align: center;
+  font-size: 13px;
+  color: #059669;
+  margin-top: 6px;
+}
+
+.receipt-footer {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.theme-christmas .receipt-greeting {
+  color: #b91c1c;
+}
+
+.modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.btn-print {
+  background-color: #334155;
+  font-size: 13px;
+}
+
+.btn-download {
+  background-color: #2563eb;
+  font-size: 13px;
+}
+
+/* ตั้งค่าสำหรับสั่งพิมพ์ใบเสร็จ */
+@media print {
+  body {
+    background: #ffffff;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .modal-overlay {
+    position: static;
+    background: none;
+    padding: 0;
+  }
+
+  .modal-container {
+    box-shadow: none;
+    max-width: 80mm;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .receipt-paper {
+    border: none !important;
+    padding: 4px;
+  }
+}
